@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { TypeormLoader } from "type-graphql-dataloader";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Tag } from "./Tag";
 
 @Entity()
@@ -18,7 +19,7 @@ export class Movie extends BaseEntity {
   minutes?: number | null;
 
   @OneToMany(() => Tag, tag => tag.movie, { cascade: true })
-  @JoinColumn()
   @Field(() => [Tag], { nullable: true })
+  @TypeormLoader()
   tags: Tag[] | null
 }

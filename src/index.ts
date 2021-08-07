@@ -1,9 +1,10 @@
 import "reflect-metadata";
-import { createConnection, getConnectionOptions } from "typeorm";
+import { createConnection, getConnection, getConnectionOptions } from "typeorm";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { MovieResolver } from "./resolvers/MovieResolver";
+import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
 
 (async () => {
   const app = express();
@@ -20,7 +21,12 @@ import { MovieResolver } from "./resolvers/MovieResolver";
       ],
       validate: true
     }),
-    context: ({ req, res }) => ({ req, res })
+    context: ({ req, res }) => ({ req, res }),
+    plugins: [
+      ApolloServerLoaderPlugin({
+        typeormGetConnection: getConnection
+      })
+    ]
   });
 
   apolloServer.applyMiddleware({ app, cors: false });

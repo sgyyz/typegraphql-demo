@@ -56,8 +56,6 @@ export class MovieResolver {
 
   @Query(() => [Movie])
   movies() {
-    return Movie.createQueryBuilder("movie")
-    .leftJoinAndSelect("movie.tags", "tags")
-    .getMany()
+    return Movie.find()
   }
 }
