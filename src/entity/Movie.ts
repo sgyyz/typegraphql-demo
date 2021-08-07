@@ -18,6 +18,9 @@ export class Movie extends BaseEntity {
   @Field(() => Int)
   minutes?: number | null;
 
+  @Field()
+  fullName: string;
+
   @OneToMany(() => Tag, tag => tag.movie, { cascade: true })
   @Field(() => [Tag], { nullable: true })
   @TypeormLoader()

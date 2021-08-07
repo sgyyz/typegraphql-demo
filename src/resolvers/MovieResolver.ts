@@ -1,5 +1,5 @@
 import { Movie } from "../entity/Movie";
-import { Arg, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver, Root } from "type-graphql";
 import { Tag } from "../entity/Tag";
 
 @InputType()
@@ -14,7 +14,7 @@ class MovieInput {
   tags: string[]
 }
 
-@Resolver()
+@Resolver(() => Movie)
 export class MovieResolver {
   @Mutation(() => Movie)
   async createMovie(
@@ -57,5 +57,10 @@ export class MovieResolver {
   @Query(() => [Movie])
   movies() {
     return Movie.find()
+  }
+
+  @FieldResolver()
+  fullName(@Root() movie: Movie) {
+    return `${movie.title} - ${movie.minutes} minutes`;
   }
 }
